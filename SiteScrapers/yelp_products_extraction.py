@@ -3,12 +3,11 @@ from bs4 import BeautifulSoup
 import requests
 
 
-class EbayProductsExtraction:
+class YelpProductsExtraction:
     @staticmethod
-    def get_ebay_popular_product_details():
+    def get_yel_default_product_details():
         # the eBay search URL
-        url = 'https://www.ebay.com/globaldeals?_trkparms=pageci%3A46b54439-f1c1-11ed-bad5-4201c6b7c2de%7Cparentrq' \
-              '%3A1681ec7b1880aaf4c952b4ecfffb7031%7Ciid%3A2'
+        url = 'https://www.yelp.com/search?find_desc=Restaurants&find_loc=San+Francisco%2C+CA'
         # make a GET request to the URL
         response = requests.get(url)
 
@@ -16,18 +15,19 @@ class EbayProductsExtraction:
         soup = BeautifulSoup(response.content, 'html.parser')
 
         # find all the search result items
-        items = soup.find_all('div', class_='dne-itemtile-detail')
+        class_string_value = 'container__09f24__mpR8_ hoverable__09f24__wQ_on  border-color--default__09f24__NPAKY'
+        items = soup.find_all('div', {'data-testid':'serp-ia-card'})
         result_list = []
         # iterate over the items and extract the details
         for item in items:
             # extract the product title
-            product_details = item.find('a')
+            restaurant_details = item.find('a', role='link')
             # print("product_details="+str(product_details));
-            if product_details:
-                product_details_text = product_details.text.strip()
+            if restaurant_details:
+                restaurant_details_text = restaurant_details.text.strip()
                 # print('product_details_text='+product_details_text)
             else:
-                title_text = 'N/A'
+                restaurant_details_text = 'N/A'
 
             # extract the product price
             price = item.find('span', class_='first')
@@ -51,34 +51,18 @@ class EbayProductsExtraction:
             else:
                 image_url = 'N/A'
 
-            discount = item.find(class_="dne-itemtile-original-price")
-            if discount:
-                discount_text = discount.text.strip()
-            else:
-                discount_text = 'N/A'
-
-            allmost_gone = item.find('span',
-                                     class_='dne-itemcard-hotness itemcard-hotness-red dne-itemcard-hotness-with-badge')
-            if allmost_gone:
-                allmost_gone_text = allmost_gone.text.strip()
-            else:
-                allmost_gone_text = 'N/A'
 
             # print the product details
             print()
             print()
-            print(f'Title: {product_details_text}')
-            print(f'Price: {price_text}')
+            #print(f'Title: {item_url}')
             print(f'IMAGE URL: {image_url}')
-            print(f'DISCOUNT: {discount_text}')
-            print(f'ALLMOST_GONE: {allmost_gone_text}')
             print()
             result_list.append({
-                'title': product_details_text,
+                'resturant_name': restaurant_details_text,
                 'link': url_text,
                 'image': image,
-                'price': price_text,
-                'discount':discount_text
+                'price': price_text
             })
         print(len(result_list))
         return result_list
@@ -121,4 +105,4 @@ class EbayProductsExtraction:
 
 
 if __name__ == "__main__":
-    EbayProductsExtraction.get_ebay_popular_product_details()
+    YelpProductsExtraction.get_yel_default_product_details()
