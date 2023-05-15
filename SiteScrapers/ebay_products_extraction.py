@@ -7,8 +7,8 @@ class EbayProductsExtraction:
     @staticmethod
     def get_ebay_popular_product_details():
         # the eBay search URL
-        url = 'https://www.ebay.com/globaldeals?_trkparms=pageci%3A46b54439-f1c1-11ed-bad5-4201c6b7c2de%7Cparentrq' \
-              '%3A1681ec7b1880aaf4c952b4ecfffb7031%7Ciid%3A2'
+        url = 'https://www.ebay.com/globaldeals?_trkparms=' \
+              +'pageci%3A46b54439-f1c1-11ed-bad5-4201c6b7c2de%7Cparentrq%3A1681ec7b1880aaf4c952b4ecfffb7031%7Ciid%3A2'
         # make a GET request to the URL
         response = requests.get(url)
 

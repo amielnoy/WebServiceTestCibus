@@ -7,7 +7,13 @@ class YelpProductsExtraction:
     @staticmethod
     def get_yel_default_product_details():
         # the eBay search URL
-        url = 'https://www.yelp.com/search?find_desc=Restaurants&find_loc=San+Francisco%2C+CA'
+        query_type = 'Restaurants'
+        location = 'San+Francisco%2C+CA'
+
+        url = 'https://www.yelp.com/search?find_desc=' \
+              + query_type \
+              + '&find_loc=' \
+              + location
         # make a GET request to the URL
         response = requests.get(url)
 
@@ -16,26 +22,42 @@ class YelpProductsExtraction:
 
         # find all the search result items
         class_string_value = 'container__09f24__mpR8_ hoverable__09f24__wQ_on  border-color--default__09f24__NPAKY'
-        items = soup.find_all('div', {'data-testid':'serp-ia-card'})
+        items = soup.find_all('div', {'data-testid': 'serp-ia-card'})
         result_list = []
         # iterate over the items and extract the details
         for item in items:
             # extract the product title
             restaurant_details = item.find('a', role='link')
             # print("product_details="+str(product_details));
+
             if restaurant_details:
                 restaurant_details_text = restaurant_details.text.strip()
                 # print('product_details_text='+product_details_text)
             else:
                 restaurant_details_text = 'N/A'
 
+            price_category = item.find('p',class_='css-dzq7l1')
+            # print("product_details="+str(product_details));
+            if price_category:
+                price_category_text = price_category.text.strip()
+                # print('product_details_text='+product_details_text)
+            else:
+                price_category_text = 'N/A'
+
+            restaurant_overview = item.find('p', class_="css-16lklrv")
+            # print("product_details="+str(product_details));
+            if restaurant_overview:
+                restaurant_overview_text = restaurant_overview.text.strip()
+                # print('product_details_text='+product_details_text)
+            else:
+                restaurant_overview_text = 'N/A'
             # extract the product price
-            price = item.find('span', class_='first')
-            if price:
-                price_text = price.text.strip()
+            when_opened = item.find(class_='tagText__09f24__ArEfy iaTagText__09f24__Gv1CO css-chan6m')
+            if when_opened:
+                when_opened_text = when_opened.text.strip()
                 # print("price="+price_text)
             else:
-                price_text = 'N/A'
+                when_opened_text = 'N/A'
 
             # extract the product URL
             url = item.find('a', itemprop='url')
@@ -51,18 +73,19 @@ class YelpProductsExtraction:
             else:
                 image_url = 'N/A'
 
-
             # print the product details
             print()
             print()
-            #print(f'Title: {item_url}')
+            # print(f'Title: {item_url}')
             print(f'IMAGE URL: {image_url}')
             print()
             result_list.append({
                 'resturant_name': restaurant_details_text,
                 'link': url_text,
                 'image': image,
-                'price': price_text
+                'price_category':price_category_text,
+                'when_opened': when_opened_text,
+                'restaurant_overview':restaurant_overview_text
             })
         print(len(result_list))
         return result_list
