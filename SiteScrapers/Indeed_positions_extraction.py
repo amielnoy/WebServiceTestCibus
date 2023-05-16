@@ -3,9 +3,9 @@ from bs4 import BeautifulSoup
 import requests
 
 
-class YelpRestaurantsExtraction:
+class YelpProductsExtraction:
     @staticmethod
-    def get_yelp_default_resurants_details():
+    def get_yel_default_product_details():
         # the eBay search URL
         query_type = 'Restaurants'
         location = 'San+Francisco%2C+CA'
@@ -36,7 +36,7 @@ class YelpRestaurantsExtraction:
             else:
                 restaurant_details_text = 'N/A'
 
-            price_category = item.find('p', class_='css-dzq7l1')
+            price_category = item.find('p',class_='css-dzq7l1')
             # print("product_details="+str(product_details));
             if price_category:
                 price_category_text = price_category.text.strip()
@@ -79,13 +79,14 @@ class YelpRestaurantsExtraction:
             # print(f'Title: {item_url}')
             print(f'IMAGE URL: {image_url}')
             print()
-            result_item_details = '[[' + 'resturant_name:' + restaurant_details_text \
-                                  + '  ' + 'link:' + url_text \
-                                  + '  ' + 'image:' + image.text \
-                                  + '  ' + 'price_category:' + price_category_text \
-                                  + '  ' + 'when_opened:' + when_opened_text \
-                                  + '  ' + 'restaurant_overview:' + restaurant_overview_text+']]'
-            result_list.append(result_item_details)
+            result_list.append({
+                'resturant_name': restaurant_details_text,
+                'link': url_text,
+                'image': image,
+                'price_category':price_category_text,
+                'when_opened': when_opened_text,
+                'restaurant_overview':restaurant_overview_text
+            })
         print(len(result_list))
         return result_list
 
@@ -127,4 +128,4 @@ class YelpRestaurantsExtraction:
 
 
 if __name__ == "__main__":
-    YelpRestaurantsExtraction.get_yelp_default_resurants_details()
+    YelpProductsExtraction.get_yel_default_product_details()

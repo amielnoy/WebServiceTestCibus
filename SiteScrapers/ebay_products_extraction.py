@@ -8,7 +8,7 @@ class EbayProductsExtraction:
     def get_ebay_popular_product_details():
         # the eBay search URL
         url = 'https://www.ebay.com/globaldeals?_trkparms=' \
-              +'pageci%3A46b54439-f1c1-11ed-bad5-4201c6b7c2de%7Cparentrq%3A1681ec7b1880aaf4c952b4ecfffb7031%7Ciid%3A2'
+              + 'pageci%3A46b54439-f1c1-11ed-bad5-4201c6b7c2de%7Cparentrq%3A1681ec7b1880aaf4c952b4ecfffb7031%7Ciid%3A2'
         # make a GET request to the URL
         response = requests.get(url)
 
@@ -18,6 +18,7 @@ class EbayProductsExtraction:
         # find all the search result items
         items = soup.find_all('div', class_='dne-itemtile-detail')
         result_list = []
+        res_item=""
         # iterate over the items and extract the details
         for item in items:
             # extract the product title
@@ -73,13 +74,13 @@ class EbayProductsExtraction:
             print(f'DISCOUNT: {discount_text}')
             print(f'ALLMOST_GONE: {allmost_gone_text}')
             print()
-            result_list.append({
-                'title': product_details_text,
-                'link': url_text,
-                'image': image,
-                'price': price_text,
-                'discount':discount_text
-            })
+            res_item = 'title :' + product_details_text \
+                      + '\n'+'link:' + url_text \
+                      + '\n' + 'image:' + image_url \
+                      + "\n" + 'price:' + price_text \
+                      + "\n" + 'discount:' + discount_text \
+                      + "\n\n"
+            result_list.append(res_item)
         print(len(result_list))
         return result_list
 
