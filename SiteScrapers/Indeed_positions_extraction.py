@@ -1,94 +1,29 @@
 import requests
 from bs4 import BeautifulSoup
 import requests
+from playwright.sync_api import sync_playwright
+import os
 
-
-class YelpProductsExtraction:
+class IndeedJobsExtraction:
     @staticmethod
-    def get_yel_default_product_details():
-        # the eBay search URL
-        query_type = 'Restaurants'
-        location = 'San+Francisco%2C+CA'
+    def test_playwright_on_chrome():
+        playwright = sync_playwright().start()
 
-        url = 'https://www.yelp.com/search?find_desc=' \
-              + query_type \
-              + '&find_loc=' \
-              + location
-        # make a GET request to the URL
-        response = requests.get(url)
+        user_dir = '/tmp/playwright'
+        if not os.path.exists(user_dir):
+            os.makedirs(user_dir)
 
-        # create a BeautifulSoup object
-        soup = BeautifulSoup(response.content, 'html.parser')
+        browser = playwright.chromium.launch(headless=False)
+        context = browser.new_context()
+        page = context.new_page()
+        page.goto('https://indeed.com/')
+        page.pause()
+        print("My url=" + page.url)
+        all_job_items_container = page.locator('xpath=//ul[1]')
+        children = all_job_items_container.locator('xpath=ul[1]/li[0]')
+        return {'result': page.title()}
 
-        # find all the search result items
-        class_string_value = 'container__09f24__mpR8_ hoverable__09f24__wQ_on  border-color--default__09f24__NPAKY'
-        items = soup.find_all('div', {'data-testid': 'serp-ia-card'})
-        result_list = []
-        # iterate over the items and extract the details
-        for item in items:
-            # extract the product title
-            restaurant_details = item.find('a', role='link')
-            # print("product_details="+str(product_details));
 
-            if restaurant_details:
-                restaurant_details_text = restaurant_details.text.strip()
-                # print('product_details_text='+product_details_text)
-            else:
-                restaurant_details_text = 'N/A'
-
-            price_category = item.find('p',class_='css-dzq7l1')
-            # print("product_details="+str(product_details));
-            if price_category:
-                price_category_text = price_category.text.strip()
-                # print('product_details_text='+product_details_text)
-            else:
-                price_category_text = 'N/A'
-
-            restaurant_overview = item.find('p', class_="css-16lklrv")
-            # print("product_details="+str(product_details));
-            if restaurant_overview:
-                restaurant_overview_text = restaurant_overview.text.strip()
-                # print('product_details_text='+product_details_text)
-            else:
-                restaurant_overview_text = 'N/A'
-            # extract the product price
-            when_opened = item.find(class_='tagText__09f24__ArEfy iaTagText__09f24__Gv1CO css-chan6m')
-            if when_opened:
-                when_opened_text = when_opened.text.strip()
-                # print("price="+price_text)
-            else:
-                when_opened_text = 'N/A'
-
-            # extract the product URL
-            url = item.find('a', itemprop='url')
-            if url:
-                url_text = url['href']
-            else:
-                url_text = 'N/A'
-
-            parent = item.parent
-            image = parent.find('img')
-            if image:
-                image_url = image['src']
-            else:
-                image_url = 'N/A'
-
-            # print the product details
-            print()
-            print()
-            # print(f'Title: {item_url}')
-            print(f'IMAGE URL: {image_url}')
-            print()
-            result_list.append({
-                'resturant_name': restaurant_details_text,
-                'link': url_text,
-                'image': image,
-                'price_category':price_category_text,
-                'when_opened': when_opened_text,
-                'restaurant_overview':restaurant_overview_text
-            })
-        print(len(result_list))
-        return result_list
 
     @staticmethod
     def mainCategories():
@@ -128,4 +63,4 @@ class YelpProductsExtraction:
 
 
 if __name__ == "__main__":
-    YelpProductsExtraction.get_yel_default_product_details()
+    IndeedJobsExtraction.test_playwright_on_chrome()

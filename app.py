@@ -19,14 +19,6 @@ app = Flask(__name__)
 #     browser.close()
 
 
-def test_playwright_on_chrome():
-    playwright = sync_playwright().start()
-    browser = playwright.chromium.launch(headless=True, timeout=180 * 1000)
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto('https://indeed.com/')
-    print("My url=" + page.url)
-    return {'result': page.title()}
 
 
 @app.route('/amazon/searches')

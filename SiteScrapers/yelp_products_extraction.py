@@ -1,9 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 import requests
+from playwright.sync_api import sync_playwright
 
 
 class YelpRestaurantsExtraction:
+
     @staticmethod
     def get_yelp_default_resurants_details():
         # the eBay search URL
