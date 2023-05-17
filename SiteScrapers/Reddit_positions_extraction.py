@@ -26,6 +26,7 @@ subreddit = reddit_read_only.subreddit("Python")
 
 top_posts = subreddit.top(time_filter="week")
 
+print("Get Last week posts text")
 # Print the text of the top post
 print()
 print()
