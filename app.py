@@ -3,6 +3,7 @@ import json
 from SiteScrapers import amazon
 from flask import Flask, jsonify, make_response
 
+from SiteScrapers.Indeed_positions_extraction import IndeedJobsExtraction
 from SiteScrapers.ebay_products_extraction import EbayProductsExtraction
 from SiteScrapers.yelp_products_extraction import YelpRestaurantsExtraction
 from playwright.sync_api import sync_playwright
@@ -53,9 +54,9 @@ def get_yelp_default_resurant_details():
     return jsonify(restaurants_items_details_list)
 
 
-@app.route('/indeed/get')
+@app.route('/indeed/all_jobs')
 def get_indeed():
-    return test_playwright_on_chrome()
+    return IndeedJobsExtraction.get_jobs_playwright_on_chrome()
 
 
 @app.errorhandler(404)

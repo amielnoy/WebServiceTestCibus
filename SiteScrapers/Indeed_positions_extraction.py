@@ -1,27 +1,53 @@
 import requests
 from bs4 import BeautifulSoup
 import requests
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright,playwright
 import os
 
 class IndeedJobsExtraction:
     @staticmethod
-    def test_playwright_on_chrome():
+    def get_jobs_playwright_on_chrome():
         playwright = sync_playwright().start()
 
         user_dir = '/tmp/playwright'
         if not os.path.exists(user_dir):
             os.makedirs(user_dir)
 
-        browser = playwright.chromium.launch(headless=False)
-        context = browser.new_context()
+        #browser = playwright.chromium.launch(channel='msedge', headless=False)
+        #context = playwright.chromium.launch_persistent_context(user_data_dir=user_dir, headless=False)
+        context = playwright.chromium.launch( headless=False)
         page = context.new_page()
-        page.goto('https://indeed.com/')
-        page.pause()
+        url='https://www.indeed.com/l-midfield,-al-jobs.html?vjk=d5fa417e060f2640'
+        page.goto(url)
+
+        job_text_descriptions_list=[]
         print("My url=" + page.url)
-        all_job_items_container = page.locator('xpath=//ul[1]')
-        children = all_job_items_container.locator('xpath=ul[1]/li[0]')
-        return {'result': page.title()}
+        all_job_items_texts_list = page.locator('xpath=//div[@class="job_seen_beacon"]').all_inner_texts()
+        for job_text in all_job_items_texts_list:
+            job_text_descriptions_list.append(job_text)
+        print(job_text_descriptions_list)
+
+        all_job_links_list = page.locator('a')
+        for job_link in all_job_links_list.all():
+            print()
+            print(job_link)
+
+        job_link = page.locator("xpath=//div[@class='jobCard_mainContent big6_visualChanges']")
+        #use java script and 'a' tag to locate all link jobs
+        jobs_link_list = []
+        all_links=page.eval_on_selector_all("a", "elements => elements.map(element => element.href)")
+        for link in all_links:
+            print("original link="+link)
+            if not 'jobsearch' in str(link) and 'job' in str(link):
+               jobs_link_list.append(link)
+        #get links
+        #list_count = all_job_items_texts_list.count()
+        #page.pause()
+        #elements = page.get_by_role("list").filter(has_text='More...').all()
+        result_list = list(zip(jobs_link_list,job_text_descriptions_list))
+        for result in result_list:
+            print(result)
+        return {'result': result_list}
 
 
 
@@ -63,4 +89,4 @@ class IndeedJobsExtraction:
 
 
 if __name__ == "__main__":
-    IndeedJobsExtraction.test_playwright_on_chrome()
+    IndeedJobsExtraction.playwright_on_chrome()
