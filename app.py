@@ -1,12 +1,9 @@
-import json
-
 from SiteScrapers import amazon
 from flask import Flask, jsonify, make_response
 
-from SiteScrapers.Indeed_positions_extraction import IndeedJobsExtraction
+from SiteScrapers.IndeedScrraping.Indeed_positions_extraction import IndeedJobsExtraction
 from SiteScrapers.ebay_products_extraction import EbayProductsExtraction
 from SiteScrapers.yelp_products_extraction import YelpRestaurantsExtraction
-from playwright.sync_api import sync_playwright
 
 app = Flask(__name__)
 

@@ -1,3 +1,5 @@
+from sqlite3.dbapi2 import Time
+from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 import requests
@@ -15,10 +17,18 @@ class IndeedJobsExtraction:
 
         #browser = playwright.chromium.launch(channel='msedge', headless=False)
         #context = playwright.chromium.launch_persistent_context(user_data_dir=user_dir, headless=False)
-        context = playwright.chromium.launch( headless=False)
+        context = playwright.chromium.launch(headless=True)
         page = context.new_page()
         url='https://www.indeed.com/l-midfield,-al-jobs.html?vjk=d5fa417e060f2640'
         page.goto(url)
+
+
+        now = datetime.now()
+
+        current_time = now.strftime("%H:%M:%S")
+        time_stamp = current_time.replace(":", "_")
+        test_screenshot_path= "screenShots/screenshot_"  + time_stamp + ".png"
+        page.screenshot(path=test_screenshot_path, full_page=True)
 
         job_text_descriptions_list=[]
         print("My url=" + page.url)
@@ -89,4 +99,4 @@ class IndeedJobsExtraction:
 
 
 if __name__ == "__main__":
-    IndeedJobsExtraction.playwright_on_chrome()
+    IndeedJobsExtraction.get_jobs_playwright_on_chrome()
