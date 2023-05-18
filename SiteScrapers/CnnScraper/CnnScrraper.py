@@ -25,7 +25,7 @@ class CnnScrraper:
             print(headline_text)
         return headline_list
     @staticmethod
-    def getAllArticlesLinks():
+    def getAllArticlesTitleAndLinks():
         # URL of the CNN website
         url = "https://www.cnn.com/"
 
@@ -75,10 +75,34 @@ class CnnScrraper:
 
         # URL of the article to scrape
 
+    @staticmethod
+    def scrape_image_urls():
+        url = "https://www.cnn.com/"
+        # Send a GET request to the post URL
+        response = requests.get(url)
+
+        # Parse the HTML content using BeautifulSoup
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Find all image tags
+        image_tags = soup.find_all("img")
+
+        # Extract the URLs from the 'src' attribute of the image tags
+        image_urls = []
+        for tag in image_tags:
+            image_url = tag.get("src")
+            if image_url:
+                print(image_url)
+                image_urls.append(image_url)
+
+        return image_urls
+
+
 if __name__ == "__main__":
-    #CnnScrraper.getAllArticlesLinks()
-    article_url1='https://edition.cnn.com/2023/05/18/asia/g7-summit-japan-key-issues-analysis-intl-hnk/index.html'
-    CnnScrraper.scrape_article_text(article_url1)
-    article_url2 = "https://edition.cnn.com/2023/05/17/americas/harry-meghan-car-crash-intl/index.html"
-    CnnScrraper.scrape_article_text(article_url2)
+    #CnnScrraper.getAllArticlesTitleAndLinks()
+    # article_url1='https://edition.cnn.com/2023/05/18/asia/g7-summit-japan-key-issues-analysis-intl-hnk/index.html'
+    # CnnScrraper.scrape_article_text(article_url1)
+    # article_url2 = "https://edition.cnn.com/2023/05/17/americas/harry-meghan-car-crash-intl/index.html"
+    # CnnScrraper.scrape_article_text(article_url2)
+     CnnScrraper.scrape_image_urls()
     #CnnScrraper.getArticalesHeaderText()
