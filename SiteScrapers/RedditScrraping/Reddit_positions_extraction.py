@@ -76,7 +76,7 @@ class redditExtraction:
 
         # Query the top posts for the past week
         from praw.models.listing.mixins import subreddit
-        top_posts = reddit.subreddit(subreddit_name).top(time_filter='day', limit=2)
+        top_posts = reddit.subreddit(subreddit_name).top(limit=2)
 
         results_list = []
         # Loop through the top posts and download the images
@@ -92,12 +92,13 @@ class redditExtraction:
                     results_list.append("image_name=" + image_name + "image_url=" + image_url)
         return results_list
 
+
 # TODO fix images and there urls list
 if __name__ == "__main__":
-    titles_result_list = redditExtraction.get_reddit_top_week_posts_titles()
-    print(titles_result_list)
-    posts_text_result_list = redditExtraction.print_and_get_last_week_posts_text()
-    print(posts_text_result_list)
+    # titles_result_list = redditExtraction.get_reddit_top_week_posts_titles()
+    # print(titles_result_list)
+    # posts_text_result_list = redditExtraction.print_and_get_last_week_posts_text()
+    # print(posts_text_result_list)
 
-    #images_and_image_urls_list = redditExtraction.get_images_of_Last_week_top_funny_posts()
-    #print(images_and_image_urls_list)
+     images_and_image_urls_list = redditExtraction.get_images_of_Last_week_top_funny_posts()
+     print(images_and_image_urls_list)
