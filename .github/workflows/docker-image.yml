@@ -15,4 +15,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag docker build . -t python-scrraper-app:$(date +%s)
+      run:  docker build . -t python-scrraper-app
+     #docker build . --file Dockerfile --tag docker build . -t python-scrraper-app:$(date +%s)
