@@ -56,7 +56,7 @@ class CnnScrraper:
 
         return results_list
     @staticmethod
-    def scrape_article_text(url):
+    def scrape_article_text_and_article_image(url):
         # Send a GET request to the article URL
         response = requests.get(url)
 
@@ -70,14 +70,27 @@ class CnnScrraper:
         article_text = ""
         for element in article_text_elements:
             article_text += element.text.strip() + " "
-        print(article_text)
+        article_images_list=[]
+        article_images_tags = soup.find_all('img',class_='image__dam-img')
+        #print("All article images:\n")
+        for image_tag in article_images_tags:
+            image_url = image_tag.get("src")
+            if image_url:
+                #print(image_url)
+                article_images_list.append(image_url)
+
+        #print(article_text)
+        article_text_and_main_image=article_text+'\n'+article_images_list[0]
+        print()
+        print()
+        print("printing article text and it's main url image:")
+        print(article_text_and_main_image)
         return article_text
 
         # URL of the article to scrape
 
     @staticmethod
-    def scrape_image_urls():
-        url = "https://www.cnn.com/"
+    def scrape_image_urls(url):
         # Send a GET request to the post URL
         response = requests.get(url)
 
@@ -102,7 +115,7 @@ if __name__ == "__main__":
     #CnnScrraper.getAllArticlesTitleAndLinks()
     # article_url1='https://edition.cnn.com/2023/05/18/asia/g7-summit-japan-key-issues-analysis-intl-hnk/index.html'
     # CnnScrraper.scrape_article_text(article_url1)
-    # article_url2 = "https://edition.cnn.com/2023/05/17/americas/harry-meghan-car-crash-intl/index.html"
-    # CnnScrraper.scrape_article_text(article_url2)
-     CnnScrraper.scrape_image_urls()
+    article_url2 = "https://edition.cnn.com/2023/05/17/americas/harry-meghan-car-crash-intl/index.html"
+    CnnScrraper.scrape_article_text_and_article_image(article_url2)
+    #CnnScrraper.scrape_image_urls(article_url2)
     #CnnScrraper.getArticalesHeaderText()
