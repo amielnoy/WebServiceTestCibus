@@ -33,3 +33,13 @@ jobs:
     - name: Build the Docker image
       run:  docker build . -t python-scrraper-app
      #docker build . --file Dockerfile --tag docker build . -t python-scrraper-app:$(date +%s)
+    
+    - uses: docker/build-push-action@v2
+      with:
+        push: false
+    
+    - uses: addnab/docker-run-action@v3
+      with:
+       image: python-scrraper-app:$(date +%s)
+        options:--rm -it -p 5002:5002
+       run: echo "hello world"
