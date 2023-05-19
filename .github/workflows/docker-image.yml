@@ -44,4 +44,4 @@ jobs:
 #          options:-it -p 5002:5002
 #        run: echo "hello world"
     - name: Run Docker container
-      run: docker run --rm -it -p 5002:5002 python-scrraper-app:$(date +%s)
+      run: docker run  -p 5002:5002 python-scrraper-app:$(date +%s)
