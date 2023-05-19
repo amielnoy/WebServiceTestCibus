@@ -41,5 +41,5 @@ jobs:
     - uses: addnab/docker-run-action@v3
       with:
        image: python-scrraper-app:$(date +%s)
-        options:--rm -it -p 5002:5002
+        options:-it -p 5002:5002
        run: echo "hello world"
