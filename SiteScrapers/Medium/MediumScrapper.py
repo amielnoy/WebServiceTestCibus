@@ -25,14 +25,19 @@ class MediumScrraper:
         #image_tags = soup.find_all("img",alt='')
         image_tags = soup.find_all('img')
         # Extract the URLs from the 'src' attribute of the image tags
+
+
+
         image_urls_list = []
         for tag in image_tags:
             image_url = tag.get("src")
+            #image_alt_url=tag.get("alt")
+
             if image_url is None:
                 continue
             else:
                image_url_string=" \n "+str(image_url)+" \n "
-            #print(image_url_string)
+            #print(image_alt_url)
             if image_url_string is not None:
                 image_urls_list.append(image_url_string)
 
@@ -41,7 +46,7 @@ class MediumScrraper:
             if url_string != None:
                 final_image_urls_list.append(url_string)
         #convert list to string and concatanate it to post text
-        article_and_images = 'article_text=\n' + post_text +" ".join(final_image_urls_list) + "\n"
+        article_and_images = '\narticle_text:\n' + post_text +" ".join(final_image_urls_list) + "\n"
 
         print(article_and_images)
         return article_and_images
