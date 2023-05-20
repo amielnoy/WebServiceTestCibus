@@ -99,12 +99,61 @@ class MediumScrraper:
         # Extract the URLs from the 'src' attribute of the image tags
         image_urls = []
         for tag in image_tags:
-            image_url = tag.get("src")
+            image_url = tag.get("img")
             if image_url:
                 print(image_url)
                 image_urls.append(image_url)
 
         return image_urls
+
+    @staticmethod
+    def getAllArticles():
+            # URL of the MEDIUM website
+            global results_list
+            url = "https://www.medium.com/"
+
+            # Send a GET request to the URL
+            response = requests.get(url)
+
+            # Parse the HTML content using BeautifulSoup
+            soup = BeautifulSoup(response.content, "html.parser")
+            articles_details_list=[]
+            mydivs = soup.find_all('div',class_='al db')
+            for article in mydivs:
+                print(article.text)
+                writer=article.find_all('h4')
+                writer_name=writer[0].text
+                if len(writer)>=2 and writer[2].text:
+                    writer_group=writer[2].text
+                else:
+                    writer_group='N/A'
+                print(writer_name)
+                print(writer_group)
+                main_title_element = article.find_all('h2')
+                main_title_element_text=main_title_element[0].text
+                article_type_element=article.find_all('div', class_='n o')
+
+                second_title=article.find_all('h3', class_='by b eg ca cx jv jm jn jw jp jr ik')
+                second_title_text=''
+                if second_title:
+                    print(second_title[0].text)
+                    second_title_text=second_title[0].text
+                else:
+                    second_title_text ='N/A'
+
+                article_date_and_type_text=article_type_element[1].text
+                article_image=article.find_all('img')[0]
+                article_image_url=article_image['src']
+                article_json = {
+                    'article_image_icon': article_image_url,
+                    'writer_name': writer_name,
+                    'writer_group': writer_group,
+                    'main_title': main_title_element_text,
+                    'article_date_and_type_text': article_date_and_type_text,
+                    'second_title_text':second_title_text }
+                articles_details_list.append(article_json)
+
+            return articles_details_list
 
 
 # URL of the Medium po
@@ -112,11 +161,12 @@ class MediumScrraper:
 
 if __name__ == "__main__":
     url = 'https://medium.com/@mythiliraju651/best-15-test-automation-trends-for-2023-75108209696f'
-    MediumScrraper.getPostsFullTextAndMainImageUrl(url)
-    # MediumScrraper.getAllArticlesTitlesAndLinks()
+    #MediumScrraper.getPostsFullTextAndMainImageUrl(url)
+    #MediumScrraper.getAllArticlesTitlesAndLinks()
     # MediumScrraper.scrape_image_urls()
     # article_url1='https://edition.cnn.com/2023/05/18/asia/g7-summit-japan-key-issues-analysis-intl-hnk/index.html'
     # MediumScrraper.scrape_article_text(article_url1)
     # article_url2 = "https://edition.cnn.com/2023/05/17/americas/harry-meghan-car-crash-intl/index.html"
     # MediumScrraper.scrape_article_text(article_url2)
     # MediumScrraper.getArticalesHeaderText()
+    MediumScrraper.getAllArticles()
