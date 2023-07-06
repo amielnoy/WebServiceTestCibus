@@ -98,7 +98,7 @@ class DbOperations:
         user_id = self.get_user_id(user_name)
 
         self.connect(db_name)
-        check_user_query = 'SELECT COUNT(*) FROM Messages'
+        check_user_query = 'SELECT MAX(MessageId) FROM Messages'
 
         cursor = self.connection.cursor()
         cursor.execute(check_user_query)
