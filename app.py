@@ -4,7 +4,8 @@ from http.client import HTTPException
 from DbOperations.DbOperations import DbOperations
 from flask import Flask, jsonify, make_response, request, redirect, url_for, render_template
 
-from Modal.users_login_sessions import UsersLoginSessions
+from Utils.exception_ops import print_exception_details
+from Utils.users_login_sessions import UsersLoginSessions
 
 app = Flask(__name__)
 db_name = 'UserMsgs.db'
@@ -49,11 +50,7 @@ def login():
             password = request_data['Password']
 
         except Exception as exception_details:
-            print(type(exception_details))  # the exception type
-            print(exception_details.args)  # arguments stored in .args
-            print(exception_details)
-            return jsonify(
-                str(type(exception_details)) + " " + str(exception_details.args) + " " + str(exception_details))
+            print_exception_details(exception_details)
 
         db_ops = DbOperations(db_name)
 
@@ -68,6 +65,7 @@ def login():
 
 @app.route('/logout', methods=['POST'])
 def logout():
+    global username, password
     if request.method == 'POST':
         try:
             request_data = request.get_json()
@@ -75,11 +73,7 @@ def logout():
             password = request_data['Password']
 
         except Exception as exception_details:
-            print(type(exception_details))  # the exception type
-            print(exception_details.args)  # arguments stored in .args
-            print(exception_details)
-            return jsonify(
-                str(type(exception_details)) + " " + str(exception_details.args) + " " + str(exception_details))
+            print_exception_details(exception_details)
 
         db_ops = DbOperations(db_name)
 
@@ -95,16 +89,14 @@ def logout():
 
 @app.route('/messages', methods=['POST'])
 def add_message_to_user_messages():
+    global username, message_text
     try:
         request_data = request.get_json()
 
         username = request_data['UserName']
         message_text = request_data['MessageText']
     except Exception as exception_details:
-        print(type(exception_details))  # the exception type
-        print(exception_details.args)  # arguments stored in .args
-        print(exception_details)
-        return jsonify(str(type(exception_details)) + " " + str(exception_details.args) + " " + str(exception_details))
+        print_exception_details(exception_details)
 
     db_ops = DbOperations(db_name)
 
@@ -136,10 +128,8 @@ def page(message_id):
         username = request_data['UserName']
         vote = request_data['Vote']
     except Exception as exception_details:
-        print(type(exception_details))  # the exception type
-        print(exception_details.args)  # arguments stored in .args
-        print(exception_details)
-        return jsonify(str(type(exception_details)) + " " + str(exception_details.args) + " " + str(exception_details))
+        print_exception_details(exception_details)
+
     if UsersLoginSessions.is_user_logged_in(username):
         if vote == 'vote_up':
             vote = 1
@@ -148,7 +138,7 @@ def page(message_id):
 
         db_ops = DbOperations(db_name)
         votes_before = db_ops.get_current_message_votes(db_name, message_id)
-        updated_votes=votes_before + vote
+        updated_votes = votes_before + vote
 
         if updated_votes < 0:
             return jsonify("MessageId=" + str(message_id) + "Cant Updated Votes below ZERO!")
@@ -156,31 +146,47 @@ def page(message_id):
             db_ops.user_vote_for_message(username, message_id, db_name, updated_votes)
             return jsonify("MessageId=" + str(message_id) + " Updated Votes=" + str(updated_votes))
     else:
-        return jsonify("User="+username+"NOT LOGGED IN!")
+        return jsonify("User=" + username + "NOT LOGGED IN!")
 
 
 @app.route('/messages/<message_id>', methods=['DELETE'])
 def delete_user_message(message_id):
+    global username
     try:
         request_data = request.get_json()
         username = request_data['UserName']
     except Exception as exception_details:
-        print(type(exception_details))  # the exception type
-        print(exception_details.args)  # arguments stored in .args
-        print(exception_details)
-        return jsonify(str(type(exception_details)) + " " + str(exception_details.args) + " " + str(exception_details))
+        print_exception_details(exception_details)
     if UsersLoginSessions.is_user_logged_in(username):
 
         db_ops = DbOperations(db_name)
-        is_user_message = db_ops.is_user_message(db_name,message_id,username)
+        is_user_message = db_ops.is_user_message(db_name, message_id, username)
 
         if is_user_message:
-            db_ops.delete_message(message_id,db_name)
+            db_ops.delete_message(message_id, db_name)
             return jsonify("MessageId=" + str(message_id) + " DELETED SUCCESFULY By User=" + username)
         else:
-            return jsonify("MessageId=" + str(message_id) + "You can only delete your messages")
+            return jsonify("MessageId=" + str(message_id) + "You can only delete your messages/or message not exists!")
     else:
-        return jsonify("User="+username+"NOT LOGGED IN!")
+        return jsonify("User=" + username + " NOT LOGGED IN!")
+
+
+@app.route('/user/messages', methods=['GET'])
+def get_all_user_messages():
+    if request.method == 'GET':
+        current_username = UsersLoginSessions.current_loged_in_username
+
+        db_ops = DbOperations(db_name)
+
+        if UsersLoginSessions.is_user_logged_in(current_username):
+            data = db_ops.get_all_user_messages(db_name, current_username)
+            print(data)
+            return jsonify(data)
+        else:
+            report = " ERROR NO MESSAGES,BECAUSE USER NOT LOGGED IN ! "
+            print(report)
+            return jsonify(report)
+
 
 
 @app.route('/home')
@@ -204,7 +210,7 @@ def resource_not_found(e):
 
 @app.errorhandler(404)
 def resource_not_found(e):
-    return make_response(jsonify(error='Not found!'), 404)
+    return make_response(jsonify(error='full url Not found!'), 404)
 
 
 @app.errorhandler(HTTPException)
@@ -223,4 +229,4 @@ def handle_exception(e):
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5002)
+    app.run(host='0.0.0.0', port=5002)

@@ -1,10 +1,17 @@
 import sqlite3
 from aifc import Error
+from pathlib import Path
+
 import bcrypt
+
+from Utils.exception_ops import print_exception_details
 
 
 class DbOperations:
     user_id = 0
+
+    def get_project_root(self) -> Path:
+        return Path(__file__).parent.parent
 
     def __init__(self, db_name):
         self.connection = None
@@ -14,7 +21,7 @@ class DbOperations:
 
     def connect(self, db_name):
         try:
-            self.connection = sqlite3.connect('DbOperations/' + db_name)
+            self.connection = sqlite3.connect(str(self.get_project_root()) + '/DbOperations/' + db_name)
 
         except Error as e:
             print(e)
@@ -93,7 +100,7 @@ class DbOperations:
 
         return False
 
-    def insert_user_message(self, user_name, user_message,db_name):
+    def insert_user_message(self, user_name, user_message, db_name):
 
         user_id = self.get_user_id(user_name)
 
@@ -139,6 +146,32 @@ class DbOperations:
         self.connection.close();
         return query_result
 
+    def get_all_user_messages(self, db_name, user_name):
+        self.connect(db_name)
+        user_id = self.get_user_id(user_name)
+        self.connect(db_name)
+        all_user_messages_query = "select Message,votes from Messages" \
+                                  " where Userid=" \
+                                  + str(user_id)
+
+        cursor = self.connection.cursor()
+        data = cursor.execute(all_user_messages_query)
+
+        query_result = ''
+
+        for row in data:
+            print("Message = " + str(row[0]))
+            query_result += " Message = " + str(row[0])
+            print("Votes = " + str(row[1]))
+            query_result += " Votes = " + str(row[1]) + '\n'
+
+        # Add line breaks
+        query_result += '\n'
+
+        print(query_result)
+        self.connection.close();
+        return query_result
+
     def user_vote_for_message(self, user_name, message_id, db_name, updated_votes):
         self.connect(db_name)
         cursor = self.connection.cursor()
@@ -151,30 +184,38 @@ class DbOperations:
         self.connection.commit()
 
     def get_current_message_votes(self, db_name, message_id):
-        self.connect(db_name)
-        get_current_votes_query = 'SELECT votes FROM Messages where MessageId=?'
+        try:
+            self.connect(db_name)
+            get_current_votes_query = 'SELECT votes FROM Messages where MessageId=?'
 
-        cursor = self.connection.cursor()
-        cursor.execute(get_current_votes_query, (message_id,))
-        result = cursor.fetchone()
-        print(result)
-        updated_votes = int(result[0])
-        return updated_votes
+            cursor = self.connection.cursor()
+            cursor.execute(get_current_votes_query, (message_id,))
+            result = cursor.fetchone()
+            print(result)
+            updated_votes = int(result[0])
+            return updated_votes
+        except:
+            return -1
 
     def is_user_message(self, db_name, message_id, user_name):
-        self.connect(db_name)
-        user_id = self.get_user_id(user_name)
-        self.connect(db_name)
-        get_user_count = 'SELECT count(*) FROM Messages where MessageId=? and UserId=?'
+        try:
+            self.connect(db_name)
+            user_id = self.get_user_id(user_name)
+            self.connect(db_name)
+            get_user_count = 'SELECT count(*) FROM Messages where MessageId=? and UserId=?'
 
-        cursor = self.connection.cursor()
-        cursor.execute(get_user_count, (message_id, user_id))
-        result = cursor.fetchone()
-        print(result)
-        user_count = int(result[0])
-        return user_count == 1
+            cursor = self.connection.cursor()
+            cursor.execute(get_user_count, (message_id, user_id))
+            result = cursor.fetchone()
+            print(result)
+            user_count = int(result[0])
+            return user_count == 1
+        except Exception as exception_details:
+            print_exception_details(exception_details)
+            return False
 
-    def delete_message(self, message_id,db_name):
+
+    def delete_message(self, message_id, db_name):
         self.connect(db_name)
         get_user_count = 'DELETE  FROM Messages where MessageId=?'
 

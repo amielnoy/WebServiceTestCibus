@@ -1,4 +1,5 @@
 class UsersLoginSessions:
+    current_loged_in_username = None
     user_logins = {}
 
     @staticmethod
@@ -8,6 +9,7 @@ class UsersLoginSessions:
             if UsersLoginSessions.user_logins[username]:
                 print("User=" + username + " already logged in!!")
         else:
+            UsersLoginSessions.current_loged_in_username = username
             UsersLoginSessions.user_logins[username] = True
 
     @staticmethod
