@@ -2,7 +2,6 @@ FROM mcr.microsoft.com/playwright/python:v1.33.0-jammy
 
 # Set the working directory to /app
 WORKDIR /app
-EXPOSE 5002
 # Copy requirements.txt to the working directory
 COPY requirements.txt ./
 
@@ -19,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 #contained by your image, along with any arguments.
 
 #CMD ["python3", "-m", "server", "--host=0.0.0.0", "--port=443"]
-CMD ["gunicorn", "-b", "0.0.0.0:5002", "-w", "4", "app:app"]
+CMD ["gunicorn", "-b", "127.0.0.1:5002", "-w", "4", "app:app"]
