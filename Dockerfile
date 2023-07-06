@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 #contained by your image, along with any arguments.
 
 #CMD ["python3", "-m", "server", "--host=0.0.0.0", "--port=443"]
-CMD ["gunicorn", "-b", "127.0.0.1:5002", "-w", "4", "app:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:5002", "-w", "4", "app:app"]
