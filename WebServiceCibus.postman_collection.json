@@ -188,6 +188,39 @@
 			"response": []
 		},
 		{
+			"name": "Vote up for non existing message",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"UserName\":\"amiel\",\r\n    \"Vote\":\"vote_up\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5002/messages/1/vote",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"messages",
+						"1",
+						"vote"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete not existing Message",
 			"request": {
 				"method": "DELETE",
