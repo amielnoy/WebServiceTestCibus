@@ -1,14 +1,22 @@
 import json
+import os
 from http.client import HTTPException
 
 from flask import Flask, jsonify, make_response, request, render_template
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 
 from DbOperations.DbOperations import DbOperations
 from Utils.exception_ops import print_exception_details
 from Utils.users_login_sessions import UsersLoginSessions
 
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = os.urandom(12)
+jwt = JWTManager(app)
 db_name = 'UserMsgs.db'
+
 
 # Register new user ,insert it's username & password to Users Table in the
 # data base
@@ -31,15 +39,17 @@ def register_user():
         print("Password=" + password + " VERIFIED!")
     else:
         print("Password=" + password + " NOT VVERIFIED!! ERROR!!")
-    return jsonify("Wrote to Users table: user_name=" + username + " Password=" + password)
+    data={
+        "UserMessage":"Wrote to Users table: user_name=" + username + " Password=" + password
+    }
+    return jsonify(data)
 
 
 # Login to the system set the UserLoginSessions(saves all logged in users)
 # Dictionary to set the current login user
 @app.route('/login', methods=['POST'])
 def login():
-    global password
-    global username
+    global username, password
 
     try:
         request_data = request.get_json()
@@ -52,12 +62,12 @@ def login():
     db_ops = DbOperations(db_name)
 
     if db_ops.verify_password(username, password):
-        UsersLoginSessions.add_user_login(username)
-        return jsonify('user=' + username + ' logged in SUCCESFULY')
+        access_token = create_access_token(identity=username)
+        return jsonify({'access_token': access_token}), 200
     else:
         error = 'Invalid username or password.'
-        # return render_template('login.html', error=error)
         return jsonify({'error': error}), 401
+
 
 # Logout the givven user(by username & password)
 # Set him as **not logged in**
@@ -79,12 +89,17 @@ def logout():
 
         if db_ops.verify_password(username, password):
             UsersLoginSessions.remove_user_login(username)
-            return jsonify("user=" + username + " logged out succesfuly!")
+            data = {
+                "user": username,
+                "UserMessage": "logged OUT SUCCESFULY"
+            }
+            return jsonify(data)
         else:
             error = 'Invalid username or password.'
             # return render_template('login.html', error=error)
             return jsonify({'error': error}), 401
     return render_template('login.html')
+
 
 # add message to the givven user messages
 # only if he is already logged in
@@ -101,16 +116,17 @@ def add_message_to_user_messages():
 
     db_ops = DbOperations(db_name)
 
-    report = "Message=" + message_text + "  for user=" + username
     if UsersLoginSessions.is_user_logged_in(username):
         db_ops.insert_user_message(username, message_text, db_name)
-        report = report + " ADDED SUCCESFULY MESSAGE TO THE BOARD!"
-        print(report)
+        data={
+              "Message":message_text,
+              "Username": username,
+              "UserMessage": " ADDED SUCCESFULY MESSAGE TO THE BOARD!"
+              }
+        return jsonify(data)
     else:
-        report = report + " ERROR NOT ADDED,BECAUSE NOT LOGGED IN ! "
-        print(report)
+        return jsonify({"ERROR": "NOT ADDED,BECAUSE NOT LOGGED IN !"})
 
-    return jsonify(report)
 
 # Get all the messages stored at Messages table
 # For all the users
@@ -121,6 +137,7 @@ def get_all_messages():
     print(data)
     return jsonify(data)
 
+
 # vote(up or down) for specific message by it's id
 # and only if the user is looged in
 # for voting up,
@@ -128,6 +145,7 @@ def get_all_messages():
 # for down, Vote='vote_down'
 @app.route('/messages/<message_id>/vote', methods=['POST'])
 def page(message_id):
+    global username
     vote = ''
     try:
         request_data = request.get_json()
@@ -147,12 +165,23 @@ def page(message_id):
         updated_votes = votes_before + vote
 
         if updated_votes < 0:
-            return jsonify("MessageId=" + str(message_id) + "Cant Updated Votes below ZERO! Or message not EXISTS!")
+            error_data = {
+                "Messageid": message_id,
+                "ERROR": "Cant Updated Votes below ZERO! Or message not EXISTS!"
+            }
+            return jsonify(error_data)
         else:
             db_ops.user_vote_for_message(username, message_id, db_name, updated_votes)
-            return jsonify("MessageId=" + str(message_id) + " Updated Votes=" + str(updated_votes))
+            data={
+                "Messageid": message_id,
+                "UpdatedVotes": updated_votes
+            }
+            return jsonify(data)
     else:
-        return jsonify("User=" + username + "NOT LOGGED IN!")
+        data = {"User": username,
+                "Message": "NOT LOGGED IN!"}
+        return jsonify(data)
+
 
 # Delete a specific message by it's id
 # givving also the user name parameter,
@@ -172,11 +201,22 @@ def delete_user_message(message_id):
 
         if is_user_message:
             db_ops.delete_message(message_id, db_name)
-            return jsonify("MessageId=" + str(message_id) + " DELETED SUCCESFULY By User=" + username)
+            data = {
+                "MessageId": str(message_id),
+                "UserMessage": "DELETED SUCCESFULY By User=" + username
+            }
+            return jsonify(data)
         else:
-            return jsonify("MessageId=" + str(message_id) + "You can only delete your messages/or message not exists!")
+            error_data={
+                "MessageId": str(message_id),
+                "ERROR": "You can only delete your messages/or message not exists!"
+            }
+            return jsonify(error_data)
     else:
-        return jsonify("User=" + username + " NOT LOGGED IN!")
+        data = {"User": username,
+                "Message": "NOT LOGGED IN!"}
+        return jsonify(data)
+
 
 # Get all the user messages
 # Only if the user is logged in
@@ -192,14 +232,18 @@ def get_all_user_messages():
         return jsonify(data)
     else:
         report = " ERROR NO MESSAGES,BECAUSE USER NOT LOGGED IN ! "
-        print(report)
-        return jsonify(report)
+        error_data={"error":report}
+        print(error_data)
+        return jsonify(error_data)
+
+
 # Handale unautherised errors
 # Sending you are Unauthorized! message to the user
 # Because it lacks valid authentication credentials for the requested resource
 @app.errorhandler(401)
 def resource_not_found(e):
     return make_response(jsonify(error='you are Unauthorized!'), 401)
+
 
 # Handale ERROR of Autherized user that don't have permission to this resource by sending
 # you don't have permission to access this resource
@@ -209,10 +253,12 @@ def resource_not_found(e):
 def resource_not_found(e):
     return make_response(jsonify(error='you don\'t have permission to access this resource!'), 403)
 
+
 # 404 is a status code that tells a web user
 # that a requested page is not available@app.errorhandler(404)
 def resource_not_found(e):
     return make_response(jsonify(error='full url Not found!'), 404)
+
 
 # general error handler to give info
 # on the current HTTP error

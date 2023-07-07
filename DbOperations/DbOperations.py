@@ -3,6 +3,7 @@ from aifc import Error
 from pathlib import Path
 
 import bcrypt
+from flask import jsonify
 
 from Utils.exception_ops import print_exception_details
 
@@ -13,6 +14,7 @@ class DbOperations:
     # Get the full path of the project root as Path object
     def get_project_root(self) -> Path:
         return Path(__file__).parent.parent
+
     # Constructor to initialize
     # Connection and set it to the local Database
     # And set the db name
@@ -43,6 +45,7 @@ class DbOperations:
             return query_result
         except Exception as exception_details:
             print_exception_details(exception_details)
+
     # Get user id from Users table
     # If user exists!
     def get_user_id(self, username):
@@ -58,6 +61,7 @@ class DbOperations:
             return query_result
         except Exception as exception_details:
             print_exception_details(exception_details)
+
     # Write the username to the Users table
     # Write Encrypted version of the pasdword to Users DB table
     def store_user_and_password_hash(self, username, password):
@@ -79,6 +83,7 @@ class DbOperations:
             self.connection.commit()
         except Exception as exception_details:
             print_exception_details(exception_details)
+
     # Verify password correctness
     # Using the input password to create Encrypted password
     # and comparing it to Encripted password in the Users Db Table Users
@@ -98,6 +103,7 @@ class DbOperations:
             return False
         except Exception as exception_details:
             print_exception_details(exception_details)
+
     # Insert Message to the specific user by user Id
     # in the Messages DB table
     def insert_user_message(self, user_name, user_message, db_name):
@@ -122,6 +128,7 @@ class DbOperations:
             self.connection.commit()
         except Exception as exception_details:
             print_exception_details(exception_details)
+
     # Get all the messages(for all users)
     # Stored at Messages table
     def get_all_messages(self, db_name):
@@ -133,22 +140,21 @@ class DbOperations:
             cursor = self.connection.cursor()
             data = cursor.execute(all_messages_query)
 
-            query_result = ''
-
+            combined_json = {}
+            i = 0
             for row in data:
-                print("UserName = " + str(row[0]))
-                query_result += " UserName = " + str(row[0]) + " "
-                print("Message = " + str(row[1]))
-                query_result += " Message = " + str(row[1])
-                print("Votes = " + str(row[2]))
-                query_result += " Votes = " + str(row[2]) + '\n'
+                json_object = {
+                    "UserName": str(row[0]),
+                    "Message": str(row[1]),
+                    "Votes": str(row[2])
+                }
+                combined_json[f"message{i + 1}"] = json_object
+                i += 1
 
-            # Add line breaks
-            query_result += '\n'
 
-            print(query_result)
-            self.connection.close();
-            return query_result
+            print(combined_json)
+            self.connection.close()
+            return combined_json
         except Exception as exception_details:
             print_exception_details(exception_details)
 
@@ -166,26 +172,26 @@ class DbOperations:
             cursor = self.connection.cursor()
             data = cursor.execute(all_user_messages_query)
 
-            query_result = ''
-
+            combined_json = {}
+            i = 0
             for row in data:
-                print("Message = " + str(row[0]))
-                query_result += " Message = " + str(row[0])
-                print("Votes = " + str(row[1]))
-                query_result += " Votes = " + str(row[1]) + '\n'
+                json_object = {
+                    "Message": str(row[0]),
+                    "Votes": str(row[1])
+                }
+                combined_json[f"message{i + 1}"] = json_object
+                i += 1
 
-            # Add line breaks
-            query_result += '\n'
-
-            print(query_result)
-            self.connection.close();
-            return query_result
+            print(combined_json)
+            self.connection.close()
+            return combined_json
         except Exception as exception_details:
             print_exception_details(exception_details)
+
     # Increase /Decrease by one the votes field
     # for specific user message in Messages table
     def user_vote_for_message(self, user_name, message_id, db_name, updated_votes):
-      try:
+        try:
             self.connect(db_name)
             cursor = self.connection.cursor()
             set_data_query = 'UPDATE Messages ' \
@@ -195,8 +201,9 @@ class DbOperations:
 
             cursor.execute(set_data_query)
             self.connection.commit()
-      except Exception as exception_details:
-          print_exception_details(exception_details)
+        except Exception as exception_details:
+            print_exception_details(exception_details)
+
     def get_current_message_votes(self, db_name, message_id):
         try:
             self.connect(db_name)
@@ -234,12 +241,12 @@ class DbOperations:
 
     # Delete a message by it's MessageId from messages table
     def delete_message(self, message_id, db_name):
-      try:
-        self.connect(db_name)
-        get_user_count = 'DELETE  FROM Messages where MessageId=?'
+        try:
+            self.connect(db_name)
+            get_user_count = 'DELETE  FROM Messages where MessageId=?'
 
-        cursor = self.connection.cursor()
-        cursor.execute(get_user_count, (message_id,))
-        self.connection.commit()
-      except Exception as exception_details:
-          print_exception_details(exception_details)
+            cursor = self.connection.cursor()
+            cursor.execute(get_user_count, (message_id,))
+            self.connection.commit()
+        except Exception as exception_details:
+            print_exception_details(exception_details)
