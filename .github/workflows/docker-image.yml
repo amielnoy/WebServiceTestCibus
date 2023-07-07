@@ -38,9 +38,7 @@ jobs:
               #pip install ruff pytest
               if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Test with pytest
-        run: |
-              pytest web_services_tests.py
+
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run:  docker build . -t web-service-voating--app
@@ -50,3 +48,6 @@ jobs:
     
       - name: Run Docker container
         run: docker run -d -p 5002:5002 web-service-voating--app
+      - name: Test with pytest
+        run: |
+          pytest web_services_tests.py
