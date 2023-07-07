@@ -31,17 +31,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run:  docker build . -t python-scrraper-app
+      run:  docker build . -t web-service-voating--app
      #docker build . --file Dockerfile --tag docker build . -t python-scrraper-app:$(date +%s)
     
     - uses: docker/build-push-action@v2
       with:
         push: false
     
-#     - uses: addnab/docker-run-action@v3
-#       with:
-#        image: python-scrraper-app:$(date +%s)
-#          options:-it -p 5002:5002
-#        run: echo "hello world"
     - name: Run Docker container
-      run: docker run  -p 5002:5002 python-scrraper-app:$(date +%s)
+      run: docker run  -p 5002:5002 web-service-voating--app
