@@ -2,9 +2,7 @@ import json
 from flask import Flask
 from flask.testing import FlaskClient
 import pytest
-from unittest.mock import patch
 
-from Utils.users_login_sessions import UsersLoginSessions
 from app import app
 
 
