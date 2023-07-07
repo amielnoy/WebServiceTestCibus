@@ -27,12 +27,26 @@ There are two options,
 # **To run and test the various web services:**
 
 use the folowing postman collection,
+
 import to postman the postman requests collection
-WebServiceCibus.postman_collection.json
+**`WebServiceCibus.postman_collection.json`**
+
 located at the root of the project
+and run the requests to test the webservices
+from postman
+to install postman:
+https://www.postman.com/downloads/
 # **To run the unit tests:**
 
 from the project root
 **Run on terminal:**
 
-`pytest unit_testing/web_services_tests.py`
+`pytest web_services_tests.py`
+
+I have provided also a github actions 
+pipeline(workflow)
+
+So you can run the server(using buils & run docker commands)
+and the test
+from this link:
+https://github.com/amielnoy/WebServiceTestCibus/actions/workflows/docker-image.yml
