@@ -20,7 +20,7 @@ def test_register_user(client):
     }
     response = client.post('/register', json=data)
     assert response.status_code == 200
-    assert response.json == "Wrote to Users table: user_name=test_user Password=test_password"
+    assert response.json == {'UserMessage': 'Wrote to Users table: user_name=test_user Password=test_password'}
 
 
 def test_login(client):
@@ -30,8 +30,7 @@ def test_login(client):
     }
     response = client.post('/login', json=data)
     assert response.status_code == 200
-    assert response.json == 'user=test_user logged in SUCCESFULY'
-
+    assert str(response.json).__contains__("access_token")
 
 def test_logout(client):
     data = {
@@ -40,7 +39,7 @@ def test_logout(client):
     }
     response = client.post('/logout', json=data)
     assert response.status_code == 200
-    assert response.json == 'user=test_user logged out succesfuly!'
+    assert response.json == {'UserMessage': 'logged OUT SUCCESFULY', 'user': 'test_user'}
 
 def test_get_all_messages(client):
     response = client.get('/messages')
