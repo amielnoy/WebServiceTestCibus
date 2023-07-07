@@ -62,6 +62,7 @@ def login():
     db_ops = DbOperations(db_name)
 
     if db_ops.verify_password(username, password):
+        UsersLoginSessions.add_user_login(username)
         access_token = create_access_token(identity=username)
         return jsonify({'access_token': access_token}), 200
     else:
