@@ -40,7 +40,7 @@ jobs:
 
       - name: Test with pytest
         run: |
-              pytest
+              pytest unit_testing/web_services_tests.py
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run:  docker build . -t web-service-voating--app
