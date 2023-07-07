@@ -1,7 +1,15 @@
 # Web Services Test Cibus
 
 The solution is implemented based on flask python web framework
-using local sqlite3 database
+using:
+1)local sqlite3 database
+2)flask python server
+3)JWT for secure login with token
+
+Implemented:
+Unit tests
+Docker File to run server as docker container
+Error Handaling for the requests
 
 ## To run the web services:
 
