@@ -47,7 +47,7 @@ from the project root
 I have provided also a github actions 
 pipeline(workflow)
 
-So you can run the server(using buils & run docker commands)
+So you can run the server(using build & run docker commands)
 and the test
 from this link:
 https://github.com/amielnoy/WebServiceTestCibus/actions/workflows/docker-image.yml
