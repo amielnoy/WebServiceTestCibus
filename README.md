@@ -8,7 +8,8 @@ using local sqlite3 database
 ## 1)Open the project in PyCharm community edition
   define virtual env
   choose python 3.10 and above
-
+  Install:JWT
+pip install Flask-JWT-Extended
 ## 2)Run the Server.
 
 There are two options,
