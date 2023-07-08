@@ -105,12 +105,13 @@ def logout():
 # add message to the givven user messages
 # only if he is already logged in
 @app.route('/messages', methods=['POST'])
+@jwt_required()
 def add_message_to_user_messages():
     global username, message_text
     try:
         request_data = request.get_json()
 
-        username = request_data['UserName']
+        username = get_jwt_identity()
         message_text = request_data['MessageText']
     except Exception as exception_details:
         print_exception_details(exception_details)
@@ -145,12 +146,13 @@ def get_all_messages():
 # parameter in the request body Vote='vote_up'
 # for down, Vote='vote_down'
 @app.route('/messages/<message_id>/vote', methods=['POST'])
-def page(message_id):
+@jwt_required()
+def vote_to_message(message_id):
     global username
     vote = ''
     try:
         request_data = request.get_json()
-        username = request_data['UserName']
+        username = get_jwt_identity()
         vote = request_data['Vote']
     except Exception as exception_details:
         print_exception_details(exception_details)
@@ -188,11 +190,11 @@ def page(message_id):
 # givving also the user name parameter,
 # the user can only delete it's own messages
 @app.route('/messages/<message_id>', methods=['DELETE'])
+@jwt_required()
 def delete_user_message(message_id):
     global username
     try:
-        request_data = request.get_json()
-        username = request_data['UserName']
+        username = get_jwt_identity()
     except Exception as exception_details:
         print_exception_details(exception_details)
     if UsersLoginSessions.is_user_logged_in(username):
@@ -222,8 +224,9 @@ def delete_user_message(message_id):
 # Get all the user messages
 # Only if the user is logged in
 @app.route('/user/messages', methods=['GET'])
+@jwt_required()
 def get_all_user_messages():
-    current_username = UsersLoginSessions.current_loged_in_username
+    current_username = get_jwt_identity()
 
     db_ops = DbOperations(db_name)
 
