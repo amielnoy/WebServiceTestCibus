@@ -62,6 +62,33 @@
 			"response": []
 		},
 		{
+			"name": "login local repl",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"UserName\":\"amiel\",\r\n   \"Password\":\"a1m2i3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5002/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "logout",
 			"request": {
 				"auth": {
@@ -103,6 +130,39 @@
 		},
 		{
 			"name": "AddUserMessage",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODc0NTQ3NiwianRpIjoiOGE1OWU5ODAtMTVlOC00ODYwLWE4NTYtMDY3Y2ZhOTBmNGM5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4NzQ1NDc2LCJleHAiOjE2ODg3NDYzNzZ9.pzWPDb44sWnRzmG8FuLTXbnCvnaj0yakRzSKj6g3xvQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"UserName\":\"amiel5\",\r\n    \"MessageText\":\"Amiel MessageText3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5002/messages",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddUserMessage repel",
 			"request": {
 				"method": "POST",
 				"header": [
