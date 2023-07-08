@@ -75,12 +75,13 @@ def login():
 # in UserLoginSessions(saves all logged in users)
 # Dictionary
 @app.route('/logout', methods=['POST'])
+@jwt_required()
 def logout():
     global username, password
     if request.method == 'POST':
         try:
             request_data = request.get_json()
-            username = request_data['UserName']
+            username = request.get_json()
             password = request_data['Password']
 
         except Exception as exception_details:
@@ -127,7 +128,7 @@ def add_message_to_user_messages():
               }
         return jsonify(data)
     else:
-        return jsonify({"ERROR": "NOT ADDED,BECAUSE NOT LOGGED IN !"})
+        return jsonify({"ERROR": "NOT ADDED,BECAUSE NOT LOGGED IN !/OR BAD REQUEST PARAMETER"})
 
 
 # Get all the messages stored at Messages table
