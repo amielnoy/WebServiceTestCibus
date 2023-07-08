@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amiel2\",\r\n    \"Password\":\"a1p1\"\r\n}",
+					"raw": "{\r\n    \"UserName\":\"amir\",\r\n    \"Password\":\"a1mei3\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -35,7 +35,7 @@
 			"response": []
 		},
 		{
-			"name": "login",
+			"name": "login local",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -49,12 +49,9 @@
 					}
 				},
 				"url": {
-					"raw": "127.0.0.1:5002/login",
+					"raw": "localhost:5002/login",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "5002",
 					"path": [
@@ -67,11 +64,21 @@
 		{
 			"name": "logout",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODg0ODI4MywianRpIjoiZmY0ZDRjMzUtYTViYS00MDc5LTkwZmQtNDE4Y2U2NzFmYTAyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4ODQ4MjgzLCJleHAiOjE2ODg4NDkxODN9.PgYYLKoF_U4eHPn7X1XpDHypkkZ3utvV2TtD6t-_pmM",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amiel\",\r\n    \"Password\":\"a1m2i3\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -98,10 +105,16 @@
 			"name": "AddUserMessage",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODc0NTQ3NiwianRpIjoiOGE1OWU5ODAtMTVlOC00ODYwLWE4NTYtMDY3Y2ZhOTBmNGM5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4NzQ1NDc2LCJleHAiOjE2ODg3NDYzNzZ9.pzWPDb44sWnRzmG8FuLTXbnCvnaj0yakRzSKj6g3xvQ",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amiel\",\r\n    \"MessageText\":\"Amiel Message7\"\r\n}",
+					"raw": "{\r\n    \"UserName\":\"amiel5\",\r\n    \"MessageText\":\"Amiel MessageText3\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,18 +149,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5002/messages/1/vote",
-					"protocol": "http",
+					"raw": "localhost:5002/messages/2/vote",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "5002",
 					"path": [
 						"messages",
-						"1",
+						"2",
 						"vote"
 					]
 				}
@@ -254,11 +263,21 @@
 		{
 			"name": "Delete existing Message",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODg0MTgzMiwianRpIjoiOGQzMDRiOTMtYjRlZi00MDUyLWIyYzItODM3MjA4ZDI0ZmU5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4ODQxODMyLCJleHAiOjE2ODg4NDI3MzJ9.hZr0aHySW3zhty14M9Pxoc-XcQC5mmVA8vGvoQIBBeI",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amiel\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -266,7 +285,7 @@
 					}
 				},
 				"url": {
-					"raw": "127.0.0.1:5002/messages/2",
+					"raw": "127.0.0.1:5002/messages/7",
 					"host": [
 						"127",
 						"0",
@@ -276,7 +295,7 @@
 					"port": "5002",
 					"path": [
 						"messages",
-						"2"
+						"7"
 					]
 				}
 			},
@@ -293,8 +312,29 @@
 		{
 			"name": "Get all user messages",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODg0MjExNCwianRpIjoiYzkyOWJiOTMtZGZlNC00YTE2LTgyNDEtMmMwODRmMzk4NmI3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4ODQyMTE0LCJleHAiOjE2ODg4NDMwMTR9.xj_jBr9rVXoPlzmRUvur4tHAC4t-FW8YqTbDCUym79c",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:5002/user/messages",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"user",
+						"messages"
+					]
+				}
 			},
 			"response": []
 		}

@@ -2,14 +2,32 @@
 
 The solution is implemented based on flask python web framework
 using:
-1)local sqlite3 database
+
+1)local sqlite3 database 
+to store the users info
+and messages info in two tables 
+
 2)flask python server
+because it's simple to use and implement and supports the requested functionalty
+
 3)JWT for secure login with token
+i have used JWT:
+Because it's a good way of securely transmitting information between parties
+because they can be signed,
+which means you can be certain that the senders are who they say they are.
+Additionally, the structure of a JWT allows you to verify that the content hasn't been tampered with.
 
 Implemented:
 Unit tests
 Docker File to run server as docker container
 Error Handaling for the requests
+
+in addition a github actions workflow to build and run docker server and run the tests(on github)
+So you can run the serve(using build & run docker commands)
+and the tests
+from this link:
+https://github.com/amielnoy/WebServiceTestCibus/actions/workflows/docker-image.yml
+
 
 ## To run the web services:
 
@@ -55,7 +73,3 @@ from the project root
 I have provided also a github actions 
 pipeline(workflow)
 
-So you can run the server(using build & run docker commands)
-and the test
-from this link:
-https://github.com/amielnoy/WebServiceTestCibus/actions/workflows/docker-image.yml
