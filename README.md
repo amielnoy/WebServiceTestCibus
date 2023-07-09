@@ -52,11 +52,15 @@ There are two options,
     `runDocker.bat`
 
 # **To run and test the various web services:**
+Pay attention the server was published to the repl 
+website!
+
+To run the requests from server published to repl
 
 use the folowing postman collection,
 
 import to postman the postman requests collection
-**`WebServiceCibus.postman_collection.json`**
+**`WebServiceCibus.postman_collection_repl.json`**
 
 located at the root of the project
 and run the requests to test the webservices
@@ -68,6 +72,8 @@ in the header as bearer token
 ![img.png](img.png)
 
 from postman
+
+
 to install postman:
 https://www.postman.com/downloads/
 # **To run the unit tests:**
