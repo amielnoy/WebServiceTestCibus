@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Register",
+			"name": "Register repl",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -22,40 +22,16 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5002/register",
+					"raw": "https://votes.amielpeled.repl.co/register",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"votes",
+						"amielpeled",
+						"repl",
+						"co"
 					],
-					"port": "5002",
 					"path": [
 						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "login local",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n   \"UserName\":\"amiel\",\r\n   \"Password\":\"a1m2i3\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5002/login",
-					"host": [
-						"localhost"
-					],
-					"port": "5002",
-					"path": [
-						"login"
 					]
 				}
 			},
@@ -89,7 +65,7 @@
 			"response": []
 		},
 		{
-			"name": "logout",
+			"name": "logout repl",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -113,49 +89,16 @@
 					}
 				},
 				"url": {
-					"raw": "127.0.0.1:5002/logout",
+					"raw": "https://votes.amielpeled.repl.co/logout",
+					"protocol": "https",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"votes",
+						"amielpeled",
+						"repl",
+						"co"
 					],
-					"port": "5002",
 					"path": [
 						"logout"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddUserMessage",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODc0NTQ3NiwianRpIjoiOGE1OWU5ODAtMTVlOC00ODYwLWE4NTYtMDY3Y2ZhOTBmNGM5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4NzQ1NDc2LCJleHAiOjE2ODg3NDYzNzZ9.pzWPDb44sWnRzmG8FuLTXbnCvnaj0yakRzSKj6g3xvQ",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amiel5\",\r\n    \"MessageText\":\"Amiel MessageText3\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5002/messages",
-					"host": [
-						"localhost"
-					],
-					"port": "5002",
-					"path": [
-						"messages"
 					]
 				}
 			},
@@ -195,7 +138,7 @@
 			"response": []
 		},
 		{
-			"name": "Vote down for message",
+			"name": "Vote down for message repl",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -209,11 +152,55 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5002/messages/2/vote",
+					"raw": "https://votes.amielpeled.repl.co/2/vote",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"votes",
+						"amielpeled",
+						"repl",
+						"co"
 					],
-					"port": "5002",
+					"path": [
+						"2",
+						"vote"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Vote up for message repl",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODg0MTQyNiwianRpIjoiMjE5ZDcyMjEtZmE1OC00OGQzLWIzZGItYWU5OGEwZTUzNWQ3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4ODQxNDI2LCJleHAiOjE2ODg4NDIzMjZ9.M3433xOk-cQMbJXZqpVdyPEwAfwEqGnASRmM6rUjHSc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"UserName\":\"amiel\",\r\n    \"Vote\":\"vote_up\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://votes.amielpeled.repl.co/messages/2/vote",
+					"protocol": "https",
+					"host": [
+						"votes",
+						"amielpeled",
+						"repl",
+						"co"
+					],
 					"path": [
 						"messages",
 						"2",
@@ -224,7 +211,7 @@
 			"response": []
 		},
 		{
-			"name": "Vote up for message",
+			"name": "Vote up for non existing  message repl",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -238,15 +225,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5002/messages/1/vote",
-					"protocol": "http",
+					"raw": "https://votes.amielpeled.repl.co/messages/1/vote",
+					"protocol": "https",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"votes",
+						"amielpeled",
+						"repl",
+						"co"
 					],
-					"port": "5002",
 					"path": [
 						"messages",
 						"1",
@@ -257,40 +243,7 @@
 			"response": []
 		},
 		{
-			"name": "Vote up for non existing message",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amiel\",\r\n    \"Vote\":\"vote_up\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://127.0.0.1:5002/messages/1/vote",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5002",
-					"path": [
-						"messages",
-						"1",
-						"vote"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete not existing Message",
+			"name": "Delete not existing Message repl",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -304,14 +257,14 @@
 					}
 				},
 				"url": {
-					"raw": "127.0.0.1:5002/messages/1",
+					"raw": "https://votes.amielpeled.repl.co/messages/1",
+					"protocol": "https",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"votes",
+						"amielpeled",
+						"repl",
+						"co"
 					],
-					"port": "5002",
 					"path": [
 						"messages",
 						"1"
@@ -321,7 +274,7 @@
 			"response": []
 		},
 		{
-			"name": "Delete existing Message",
+			"name": "Delete existing Message repl",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -345,14 +298,14 @@
 					}
 				},
 				"url": {
-					"raw": "127.0.0.1:5002/messages/7",
+					"raw": "https://votes.amielpeled.repl.co/messages/7",
+					"protocol": "https",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"votes",
+						"amielpeled",
+						"repl",
+						"co"
 					],
-					"port": "5002",
 					"path": [
 						"messages",
 						"7"
@@ -362,10 +315,23 @@
 			"response": []
 		},
 		{
-			"name": "Get all messages",
+			"name": "Get all messages repl",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "https://votes.amielpeled.repl.co/messages",
+					"protocol": "https",
+					"host": [
+						"votes",
+						"amielpeled",
+						"repl",
+						"co"
+					],
+					"path": [
+						"messages"
+					]
+				}
 			},
 			"response": []
 		},
@@ -385,11 +351,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:5002/user/messages",
+					"raw": "https://votes.amielpeled.repl.co/user/messages",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"votes",
+						"amielpeled",
+						"repl",
+						"co"
 					],
-					"port": "5002",
 					"path": [
 						"user",
 						"messages"
