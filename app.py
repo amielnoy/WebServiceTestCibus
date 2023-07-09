@@ -120,11 +120,12 @@ def add_message_to_user_messages():
     db_ops = DbOperations(db_name)
 
     if UsersLoginSessions.is_user_logged_in(username):
-        db_ops.insert_user_message(username, message_text, db_name)
+        message_id=db_ops.insert_user_message(username, message_text, db_name)
         data={
               "Message":message_text,
               "Username": username,
-              "UserMessage": " ADDED SUCCESFULY MESSAGE TO THE BOARD!"
+              "UserMessage": " ADDED SUCCESFULY MESSAGE TO THE BOARD!",
+              "MessageID": message_id
               }
         return jsonify(data)
     else:

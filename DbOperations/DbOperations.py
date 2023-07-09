@@ -126,6 +126,7 @@ class DbOperations:
             votes = 0
             cursor.execute(insert_data_query, (message_id, user_id, user_message, votes))
             self.connection.commit()
+            return message_id
         except Exception as exception_details:
             print_exception_details(exception_details)
 
