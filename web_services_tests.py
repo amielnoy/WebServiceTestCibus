@@ -22,7 +22,7 @@ def test_register_user(client):
     }
     response = client.post('/register', json=data)
     assert response.status_code == 200
-    assert response.json == {'UserMessage': 'Wrote to Users table: user_name=test_user Password=test_password'}
+    assert response.json == {'UserMessage': 'OK'}
 
 
 @pytest.mark.first
