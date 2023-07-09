@@ -65,9 +65,11 @@ import to postman the postman requests collection
 located at the root of the project
 and run the requests to test the webservices
 
-Pay attention to first get access token using Login request
+first register the user using register
 
-and use the access_token value 
+Then get access token using Login request
+
+and use the access_token value when needed on next requests 
 in the header as bearer token
 ![img.png](img.png)
 
