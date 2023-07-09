@@ -40,7 +40,7 @@ def register_user():
     else:
         print("Password=" + password + " NOT VVERIFIED!! ERROR!!")
     data={
-        "UserMessage":"Wrote to Users table: user_name=" + username + " Password=" + password
+        "UserName":  username
     }
     return jsonify(data)
 
