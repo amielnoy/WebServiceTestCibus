@@ -1,10 +1,8 @@
 {
 	"info": {
-		"_postman_id": "90f82a5f-4be2-43c3-9f83-b8a91c3d5a6f",
+		"_postman_id": "ecd4956c-8960-46c5-9633-e92760123ffa",
 		"name": "WebServiceCibus",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "8653579",
-		"_collection_link": "https://bold-escape-539500.postman.co/workspace/5b0872f8-c3c9-4893-bb4b-825a940160a1/collection/8653579-90f82a5f-4be2-43c3-9f83-b8a91c3d5a6f?action=share&creator=8653579&source=collection_link"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -14,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amir\",\r\n    \"Password\":\"a1mei3\"\r\n}",
+					"raw": "{\r\n    \"UserName\":\"amir1\",\r\n    \"Password\":\"a1mei3\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -22,10 +20,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://votes.amielpeled.repl.co/register",
+					"raw": "https://votes1.amielpeled.repl.co/register",
 					"protocol": "https",
 					"host": [
-						"votes",
+						"votes1",
 						"amielpeled",
 						"repl",
 						"co"
@@ -38,13 +36,28 @@
 			"response": []
 		},
 		{
-			"name": "login local repl",
+			"name": "login repl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "59bd1d51-56fb-49fb-9143-babe57d7765a",
+						"exec": [
+							"",
+							"    var jsonData = pm.response.json();",
+							"    pm.globals.set(\"access_token_1\", jsonData.access_token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n   \"UserName\":\"amiel\",\r\n   \"Password\":\"a1m2i3\"\r\n}",
+					"raw": "{\r\n   \"UserName\":\"amir1\",\r\n   \"Password\":\"a1mei3\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -52,11 +65,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5002/login",
+					"raw": "https://votes1.amielpeled.repl.co/login",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"votes1",
+						"amielpeled",
+						"repl",
+						"co"
 					],
-					"port": "5002",
 					"path": [
 						"login"
 					]
@@ -106,18 +122,32 @@
 		},
 		{
 			"name": "AddUserMessage repel",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "eaa10737-32b5-4d5e-8f30-ca2394d620c4",
+						"exec": [
+							"    var jsonData = pm.response.json();",
+							"    pm.globals.set(\"MessageID\", jsonData.MessageID);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
 						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODc0NTQ3NiwianRpIjoiOGE1OWU5ODAtMTVlOC00ODYwLWE4NTYtMDY3Y2ZhOTBmNGM5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4NzQ1NDc2LCJleHAiOjE2ODg3NDYzNzZ9.pzWPDb44sWnRzmG8FuLTXbnCvnaj0yakRzSKj6g3xvQ",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amiel5\",\r\n    \"MessageText\":\"Amiel MessageText3\"\r\n}",
+					"raw": "{\r\n    \"MessageText\":\"Amiel MessageText3\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -125,11 +155,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5002/messages",
+					"raw": "https://votes1.amielpeled.repl.co/messages",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"votes1",
+						"amielpeled",
+						"repl",
+						"co"
 					],
-					"port": "5002",
 					"path": [
 						"messages"
 					]
@@ -144,7 +177,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amiel\",\r\n    \"Vote\":\"vote_up\"\r\n}",
+					"raw": "{\r\n    \"UserName\":\"amir1\",\r\n    \"Vote\":\"vote_up\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -152,16 +185,17 @@
 					}
 				},
 				"url": {
-					"raw": "https://votes.amielpeled.repl.co/2/vote",
+					"raw": "https://votes1.amielpeled.repl.co/messages/{{MessageID}}/vote",
 					"protocol": "https",
 					"host": [
-						"votes",
+						"votes1",
 						"amielpeled",
 						"repl",
 						"co"
 					],
 					"path": [
-						"2",
+						"messages",
+						"{{MessageID}}",
 						"vote"
 					]
 				}
@@ -171,21 +205,11 @@
 		{
 			"name": "Vote up for message repl",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODg0MTQyNiwianRpIjoiMjE5ZDcyMjEtZmE1OC00OGQzLWIzZGItYWU5OGEwZTUzNWQ3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4ODQxNDI2LCJleHAiOjE2ODg4NDIzMjZ9.M3433xOk-cQMbJXZqpVdyPEwAfwEqGnASRmM6rUjHSc",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"UserName\":\"amiel\",\r\n    \"Vote\":\"vote_up\"\r\n}",
+					"raw": "{\r\n    \"UserName\":\"amir1\",\r\n    \"Vote\":\"vote_up\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -193,17 +217,17 @@
 					}
 				},
 				"url": {
-					"raw": "https://votes.amielpeled.repl.co/messages/2/vote",
+					"raw": "https://votes1.amielpeled.repl.co/messages/{{MessageID}}/vote",
 					"protocol": "https",
 					"host": [
-						"votes",
+						"votes1",
 						"amielpeled",
 						"repl",
 						"co"
 					],
 					"path": [
 						"messages",
-						"2",
+						"{{MessageID}}",
 						"vote"
 					]
 				}
@@ -225,10 +249,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://votes.amielpeled.repl.co/messages/1/vote",
+					"raw": "https://votes1.amielpeled.repl.co/messages/1/vote",
 					"protocol": "https",
 					"host": [
-						"votes",
+						"votes1",
 						"amielpeled",
 						"repl",
 						"co"
@@ -257,10 +281,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://votes.amielpeled.repl.co/messages/1",
+					"raw": "https://votes1.amielpeled.repl.co/messages/1",
 					"protocol": "https",
 					"host": [
-						"votes",
+						"votes1",
 						"amielpeled",
 						"repl",
 						"co"
@@ -276,16 +300,6 @@
 		{
 			"name": "Delete existing Message repl",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODg0MTgzMiwianRpIjoiOGQzMDRiOTMtYjRlZi00MDUyLWIyYzItODM3MjA4ZDI0ZmU5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4ODQxODMyLCJleHAiOjE2ODg4NDI3MzJ9.hZr0aHySW3zhty14M9Pxoc-XcQC5mmVA8vGvoQIBBeI",
-							"type": "string"
-						}
-					]
-				},
 				"method": "DELETE",
 				"header": [],
 				"body": {
@@ -298,7 +312,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://votes.amielpeled.repl.co/messages/7",
+					"raw": "https://votes.amielpeled.repl.co/messages/{{MessageID}}",
 					"protocol": "https",
 					"host": [
 						"votes",
@@ -308,7 +322,7 @@
 					],
 					"path": [
 						"messages",
-						"7"
+						"{{MessageID}}"
 					]
 				}
 			},
@@ -320,10 +334,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://votes.amielpeled.repl.co/messages",
+					"raw": "https://votes1.amielpeled.repl.co/messages",
 					"protocol": "https",
 					"host": [
-						"votes",
+						"votes1",
 						"amielpeled",
 						"repl",
 						"co"
@@ -338,23 +352,13 @@
 		{
 			"name": "Get all user messages",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODg0MjExNCwianRpIjoiYzkyOWJiOTMtZGZlNC00YTE2LTgyNDEtMmMwODRmMzk4NmI3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFtaWVsIiwibmJmIjoxNjg4ODQyMTE0LCJleHAiOjE2ODg4NDMwMTR9.xj_jBr9rVXoPlzmRUvur4tHAC4t-FW8YqTbDCUym79c",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://votes.amielpeled.repl.co/user/messages",
+					"raw": "https://votes1.amielpeled.repl.co/user/messages",
 					"protocol": "https",
 					"host": [
-						"votes",
+						"votes1",
 						"amielpeled",
 						"repl",
 						"co"
@@ -367,5 +371,38 @@
 			},
 			"response": []
 		}
-	]
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token_1}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e5b15798-0c0c-40c3-8728-fdc84db0a3a5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "41f902e4-8bff-4c60-b561-f11e88572812",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
 }
