@@ -83,7 +83,7 @@ def test_vote_for_message(client):
     response = client.post('/messages/10/vote', json=data, headers=headers)
     assert response.status_code == 200
     response_dictionary = response.json
-    assert response_dictionary['MessageId'] == '10', "error expected Messageid 10 got=" + response_dictionary[
+    assert response_dictionary['Messageid'] == '10', "error expected Messageid 10 got=" + response_dictionary[
         'MessageId']
 
 
@@ -95,14 +95,17 @@ def test_delete_user_message(client):
     data = {"MessageText": message_text}
     response = client.post('/messages', json=data, headers=headers)
     assert response.status_code == 200
+    response_dictionary=response.json
+    MessageID=response_dictionary['MessageID']
     #delet it
-    response = client.delete('/messages/1', headers=headers)
+    response = client.delete('/messages/'+str(MessageID), headers=headers)
     assert response.status_code == 200
     # Add assertions for the expected response
     response_dictionary = response.json
-    assert response_dictionary['MessageId'] == '10', "error expected Messageid 10 got=" + response_dictionary[
+    assert response_dictionary['MessageId'] == str(MessageID), "error expected Messageid "+MessageID+ "got=" + response_dictionary[
         'MessageId']
-
+    assert response_dictionary['UserMessage'] == "DELETED SUCCESFULY By User=test_user"\
+        ,"Error in User message! expected="+"DELETED SUCCESFULY By User=test_user but got"+response_dictionary['UserMessage']
 def test_get_all_user_messages(client):
     global current_user_token
     headers = {'Authorization': f'Bearer {current_user_token}'}
